@@ -42,6 +42,19 @@ public class SocialMediaController {
         return accountService.registerAccount(newAccount);
     }
 
+    /*
+     * User Story 2: Our API should be able to process User logins.
+     */
+
+     @PostMapping(value = "/login")
+     private ResponseEntity<Account> postLoginAccount(@RequestBody Account accountToLogin)
+     {
+        return accountService.loginAccount(accountToLogin);
+     }
+
+
+
+
     /**
      * User Story 4: Our API should be able to retrieve all messages.
      * 
