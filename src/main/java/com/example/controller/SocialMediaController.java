@@ -1,8 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
-
-import javax.persistence.PostUpdate;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +33,8 @@ public class SocialMediaController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
     private MessageService messageService;
 
     /*
@@ -62,8 +62,7 @@ public class SocialMediaController {
     @PostMapping(value = "/messages")
     private ResponseEntity<Message> postNewMessage(@RequestBody Message newMessage) {
         boolean accountExists = accountService.getAccountById(newMessage.getPosted_by());
-
-        return messageService.newMessage(newMessage, accountExists);
+        return messageService.postNewMessage(newMessage, accountExists);
     }
 
     /*
@@ -78,8 +77,8 @@ public class SocialMediaController {
      * User Story 5: Our API should be able to retrieve a message by its ID.
      */
     @GetMapping("/messages/{message_id}")
-    private ResponseEntity<Message> getMessageById(@PathVariable Integer messageId) {
-        return messageService.getMessageById(messageId);
+    private ResponseEntity<Message> getMessageById(@PathVariable Integer message_id) {
+        return messageService.getMessageById(message_id);
     }
 
     /*
@@ -87,17 +86,18 @@ public class SocialMediaController {
      * message ID.
      */
     @DeleteMapping("/messages/{message_id}")
-    private ResponseEntity<Message> deleteMessageById(@PathVariable Integer messageId) {
-        return messageService.deleteMessageById(messageId);
+    private ResponseEntity<Integer> deleteMessageById(@PathVariable Integer message_id) {
+        return messageService.deleteMessageById(message_id);
     }
 
     /*
      * User Story 7: Our API should be able to update a message text identified by a
      * message ID.
      */
-    @PatchMapping("/messages")
-    private ResponseEntity<Message> updateMessageById(@RequestBody Message updatedMessage) {
-        return messageService.updateMessageById(updatedMessage);
+    @PatchMapping("/messages/{message_id}")
+    private ResponseEntity<Message> updateMessageById(@PathVariable Integer message_id,
+            @RequestBody Message updatedMessage) {
+        return messageService.updateMessageById(message_id, updatedMessage);
     }
 
     /*
@@ -105,7 +105,7 @@ public class SocialMediaController {
      * particular user.
      */
     @GetMapping("/accounts/{account_id}/messages")
-    private ResponseEntity<List<Message>> getMessageByAccountId(@PathVariable Integer accountId) {
-        return messageService.getMessageByAccountId(accountId);
+    private ResponseEntity<List<Message>> getMessageByAccountId(@PathVariable Integer account_id) {
+        return messageService.getMessageByAccountId(account_id);
     }
 }
