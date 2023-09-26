@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -95,7 +94,7 @@ public class SocialMediaController {
      * message ID.
      */
     @PatchMapping("/messages/{message_id}")
-    private ResponseEntity<Message> updateMessageById(@PathVariable Integer message_id,
+    private ResponseEntity<Integer> updateMessageById(@PathVariable Integer message_id,
             @RequestBody Message updatedMessage) {
         return messageService.updateMessageById(message_id, updatedMessage);
     }

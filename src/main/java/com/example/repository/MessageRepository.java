@@ -12,10 +12,14 @@ import com.example.entity.Message;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     // Repos are where we do our queries... simillar to the DAO files in the
     // previous project
-    @Query("FROM message WHERE posted_by = :postId")
+    @Query("FROM Message WHERE posted_by = :postId")
     List<Message> findByPostedBy(@Param("postId") Integer posted_by);
 
     @Modifying
-    @Query("DELETE FROM message WHERE message_id = :id")
-    int deleteByMessageId(@Param("id") Integer message_id);
+    @Query("DELETE FROM Message WHERE message_id = :id")
+    Integer deleteByMessageId(@Param("id") Integer message_id);
+
+    @Modifying
+    @Query("UPDATE Message SET message_text = :message WHERE message_id = :id")
+    Integer updateByMessageId(@Param("message") String message, @Param("id") Integer message_id);
 }
